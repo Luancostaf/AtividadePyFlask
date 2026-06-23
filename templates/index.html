@@ -45,7 +45,7 @@
                     </td>
                     <td class="text-center">
                         <div class="d-flex justify-content-center gap-2">
-                            <a href="/livro/editar/{{ livro.isbn }}" class="btn btn-sm btn-outline-primary">Editar</a>
+                            <a href="/atualizar?isbn={{ livro.isbn }}" class="btn btn-sm btn-outline-primary">Editar</a>
                             
                             <form action="/livro/deletar/{{ livro.isbn }}" method="POST" onsubmit="return confirm('Tem certeza que deseja deletar este livro?');">
                                 <button type="submit" class="btn btn-sm btn-danger">Deletar</button>

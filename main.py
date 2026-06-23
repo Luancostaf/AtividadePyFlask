@@ -5,19 +5,17 @@ biblioteca = dados.carregar_do_arquivo()
 
 app = Flask(__name__)
 
-# --- ROTA DA PÁGINA INICIAL (LISTAGEM + FORMULÁRIO DE DELETAR) ---
+# Rota da página inicial (listagem + formulário de deletar)
 @app.route('/')
 def pagina_inicial():
     return render_template('index.html', livros=biblioteca)
 
-# --- ROTA PARA EXIBIR E PROCESSAR O FORMULÁRIO DE CADASTRO ---
+# Rota para exibir e processar o formulário de cadastro
 @app.route('/livro/novo', methods=['GET', 'POST'])
 def novo_livro_web():
     if request.method == 'POST':
-        # Coleta os dados vindos do formulário HTML
         isbn = request.form.get('isbn').strip()
         
-        # Validação simples de duplicidade
         for livro in biblioteca:
             if livro['isbn'] == isbn:
                 return "⚠️ ERRO: Já existe um livro cadastrado com este ISBN!", 400
@@ -40,7 +38,7 @@ def novo_livro_web():
         
     return render_template('cadastro.html')
 
-# --- ROTA PARA EXIBIR E PROCESSAR O FORMULÁRIO DE ATUALIZAÇÃO ---
+# Rota para exibir e processar o formulário de atualização
 @app.route('/livro/editar/<isbn>', methods=['GET', 'POST'])
 def editar_livro_web(isbn):
     livro_encontrado = None
@@ -67,7 +65,7 @@ def editar_livro_web(isbn):
 
     return render_template('editar.html', livro=livro_encontrado)
 
-# --- ROTA PARA PROCESSAR A REMOÇÃO (DELETAR) ---
+# Rota para processar a remoção (deletar)
 @app.route('/livro/deletar/<isbn>', methods=['POST'])
 def deletar_livro_web(isbn):
     for livro in biblioteca:
@@ -77,6 +75,40 @@ def deletar_livro_web(isbn):
             break
     return redirect(url_for('pagina_inicial'))
 
+@app.route('/atualizar', methods=['GET', 'POST'])
+def atualizar_livro_web():
+    # Pegando o ISBN passado na URL (Ex: /atualizar?isbn=12345)
+    isbn_busca = request.args.get('isbn')
+    
+    # Localizar o livro correspondente na biblioteca
+    livro_encontrado = None
+    for livro in biblioteca:
+        if livro['isbn'] == isbn_busca:
+            livro_encontrado = livro
+            break
+
+    if not livro_encontrado:
+        return "❌ Livro não encontrado no acervo.", 404
+
+    # Se o usuário preencheu o formulário e clicou em "Salvar"
+    if request.method == 'POST':
+        livro_encontrado['titulo'] = request.form.get('titulo').strip()
+        livro_encontrado['autor'] = request.form.get('autor').strip()
+        livro_encontrado['genero'] = request.form.get('genero').strip()
+        livro_encontrado['ano_publicacao'] = int(request.form.get('ano_publicacao'))
+        livro_encontrado['editora'] = request.form.get('editora').strip()
+        livro_encontrado['paginas'] = int(request.form.get('paginas'))
+        livro_encontrado['localizacao'] = request.form.get('localizacao').strip()
+        livro_encontrado['status'] = request.form.get('status')
+        
+        # Salva as alterações de volta no arquivo JSON
+        dados.salvar_no_arquivo(biblioteca)
+        
+        # Redireciona de volta para a tabela da página inicial
+        return redirect(url_for('pagina_inicial'))
+
+    # Se for um acesso via GET, apenas exibe o formulário com os dados atuais do livro
+    return render_template('atualizar.html', livro=livro_encontrado)
 
 # --- (Mantidos os seus endpoints originais da API abaixo para não quebrar o código anterior) ---
 @app.route('/biblioteca', methods=['GET', 'POST'])
