@@ -1,0 +1,35 @@
+[
+    {
+        "isbn": "978-8535914849",
+        "titulo": "1984",
+        "autor": "George Orwell",
+        "genero": "Distopia",
+        "ano_publicacao": 1949,
+        "editora": "Companhia das Letras",
+        "paginas": 416,
+        "status": "disponivel",
+        "localizacao": "Estante A1, Prateleira 2"
+    },
+    {
+        "isbn": "978-8535914850",
+        "titulo": "1984",
+        "autor": "George Orwell",
+        "genero": "Distopia",
+        "ano_publicacao": 1959,
+        "editora": "Companhia das Letras",
+        "paginas": 416,
+        "status": "disponivel",
+        "localizacao": "Estante A1, Prateleira 2"
+    },
+    {
+        "isbn": "12345",
+        "titulo": "A Revolução dos Bichos",
+        "autor": "George Orwell",
+        "genero": "Distopia",
+        "editora": "Companhia das Letras",
+        "ano_publicacao": 1945,
+        "paginas": 152,
+        "status": "disponivel",
+        "localizacao": "Estante A1"
+    }
+]

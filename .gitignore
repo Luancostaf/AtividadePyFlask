@@ -1,0 +1,14 @@
+# Ambientes Virtuais de Desenvolvimento
+venv/
+.venv/
+env/
+ENV/
+
+# Caches do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Arquivo de dados local (opcional - remova se quiser enviar dados de teste)
+# arquivos/biblioteca.json
